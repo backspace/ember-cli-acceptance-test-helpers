@@ -8,10 +8,11 @@
     "ember-resolver": "~0.1.7",
     "loader.js": "stefanpenner/loader.js#1.0.1",
     "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.3",
-    "ember-cli-test-loader": "rwjblue/ember-cli-test-loader#0.0.4",
+    "ember-cli-test-loader": "dgeb/ember-cli-test-loader#test-agnostic",
     "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
-    "ember-qunit": "0.1.8",
-    "ember-qunit-notifications": "0.0.4",
-    "qunit": "~1.15.0"
+    "mocha": "~2.0.1",
+    "chai": "~1.10.0",
+    "ember-mocha-adapter": "0.2.1",
+    "ember-mocha": "~0.2.0"
   }
 }

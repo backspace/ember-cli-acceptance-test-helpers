@@ -1,139 +1,135 @@
-import {
-  test
-} from 'ember-qunit';
-
 import expectElement from '../helpers/201-created/raw/expect-element';
 
-module('Unit - expectElement');
+describe('Unit - expectElement', function() {
 
-test('expectElement exists', function(){
-  ok(expectElement, 'it exists');
-});
+  it('exists', function(){
+    expect(expectElement, 'it exists').to.exist();
+  });
 
-function makeElement(elementType, options){
-  var el = $(document.createElement(elementType));
-  if (options.class) { el.addClass('class', options.class); }
-  if (options.text)  { el.text(options.text); }
+  function makeElement(elementType, options){
+    var el = $(document.createElement(elementType));
+    if (options.class) { el.addClass('class', options.class); }
+    if (options.text)  { el.text(options.text); }
 
-  return el.get(0);
-}
-
-function makeElements(elementType, options, count){
-  var els = [];
-  for (var i = 0; i < count; i++) {
-    els.push(makeElement(elementType, options));
+    return el.get(0);
   }
 
-  return $(els);
-}
+  function makeElements(elementType, options, count){
+    var els = [];
+    for (var i = 0; i < count; i++) {
+      els.push(makeElement(elementType, options));
+    }
 
-function makeApp(findFn){
-  return {
-    testHelpers: { find: findFn },
-    $: $
-  };
-}
+    return $(els);
+  }
 
-test('passes when the element is found by app.testHelpers.find', function(){
-  var find = function(){
-    return [makeElement('div', {class:'the-div'})];
-  };
+  function makeApp(findFn){
+    return {
+      testHelpers: { find: findFn },
+      $: $
+    };
+  }
 
-  var app = makeApp(find);
+  it('passes when the element is found by app.testHelpers.find', function(){
+    var find = function(){
+      return [makeElement('div', {class:'the-div'})];
+    };
 
-  var result = expectElement(app, '.the-div');
+    var app = makeApp(find);
 
-  ok(result.ok, 'passes');
-  equal(result.message, 'Found 1 of .the-div');
-});
+    var result = expectElement(app, '.the-div');
 
-test('fails when the element is not found by app.testHelpers.find', function(){
-  var find = function(){
-    return [];
-  };
+    expect(result.ok, 'passes').to.equal(true);
+    expect(result.message).to.equal('Found 1 of .the-div');
+  });
 
-  var app = makeApp(find);
+  it('fails when the element is not found by app.testHelpers.find', function(){
+    var find = function(){
+      return [];
+    };
 
-  var result = expectElement(app, '.the-div');
+    var app = makeApp(find);
 
-  ok(!result.ok, 'fails');
-  equal(result.message, 'Found 0 of .the-div but expected 1');
-});
+    var result = expectElement(app, '.the-div');
 
-test('calls app.testHelpers.find with the given selector', function(){
-  expect(1);
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message).to.equal('Found 0 of .the-div but expected 1');
+  });
 
-  var find = function(selector){
-    equal(selector, '.the-div');
-    return [];
-  };
+  it('calls app.testHelpers.find with the given selector', function(){
+    expect(1);
 
-  var app = makeApp(find);
+    var find = function(selector){
+      expect(selector).to.equal('.the-div');
+      return [];
+    };
 
-  expectElement(app, '.the-div');
-});
+    var app = makeApp(find);
 
-test('can be passed a number', function(){
-  var find = function(){
-    return makeElements('div', {class:'the-div'}, 2);
-  };
+    expectElement(app, '.the-div');
+  });
 
-  var app = makeApp(find);
+  it('can be passed a number', function(){
+    var find = function(){
+      return makeElements('div', {class:'the-div'}, 2);
+    };
 
-  var result = expectElement(app, '.the-div', 2);
+    var app = makeApp(find);
 
-  ok(result.ok, 'passes');
-  equal(result.message, 'Found 2 of .the-div', 'correct success message');
+    var result = expectElement(app, '.the-div', 2);
 
-  // default: 1
-  result = expectElement(app, '.the-div');
+    expect(result.ok, 'passes').to.equal(true);
+    expect(result.message, 'correct success message').to.equal('Found 2 of .the-div');
 
-  ok(!result.ok, 'fails');
-  equal(result.message, 'Found 2 of .the-div but expected 1',
-        'correct failure message');
+    // default: 1
+    result = expectElement(app, '.the-div');
 
-  result = expectElement(app, '.the-div', 3);
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message, 'correct failure message').to.equal('Found 2 of .the-div but expected 1');
 
-  ok(!result.ok, 'fails');
-  equal(result.message, 'Found 2 of .the-div but expected 3',
-        'correct failure message');
-});
+    result = expectElement(app, '.the-div', 3);
 
-test('takes option `contains`', function(){
-  var find = function(){
-    return makeElements('div', {class:'the-div', text: 'foo bar'}, 1);
-  };
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message, 'correct failure message').to.equal('Found 2 of .the-div but expected 3');
+  });
 
-  var app = makeApp(find);
+  it('takes option `contains`', function(){
+    var find = function(){
+      return makeElements('div', {class:'the-div', text: 'foo bar'}, 1);
+    };
 
-  var result = expectElement(app, '.the-div', {contains:'foo'});
+    var app = makeApp(find);
 
-  ok(result.ok, 'passes');
-  equal(result.message, 'Found 1 of .the-div containing "foo"');
+    var result = expectElement(app, '.the-div', {contains:'foo'});
 
-  result = expectElement(app, '.the-div', {contains:'not found'});
+    expect(result.ok, 'passes').to.equal(true);
+    expect(result.message).to.equal('Found 1 of .the-div containing "foo"');
 
-  ok(!result.ok, 'fails');
-  equal(result.message, 'Found 1 of .the-div but 0/1 containing "not found"');
-});
+    result = expectElement(app, '.the-div', {contains:'not found'});
 
-test('option `contains` filters the elements', function(){
-  var find = function(){
-    return $([
-      makeElement('div', {class:'the-div'}),
-      makeElement('div', {class:'the-div', text: 'foo bar'})
-    ]);
-  };
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message).to.equal('Found 1 of .the-div but 0/1 containing "not found"');
+  });
 
-  var app = makeApp(find);
+  it('option `contains` filters the elements', function(){
+    var find = function(){
+      return $([
+        makeElement('div', {class:'the-div'}),
+        makeElement('div', {class:'the-div', text: 'foo bar'})
+      ]);
+    };
 
-  var result = expectElement(app, '.the-div', {contains:'foo'});
+    var app = makeApp(find);
 
-  ok(result.ok, 'passes');
-  equal(result.message, 'Found 1 of .the-div containing "foo"');
+    var result = expectElement(app, '.the-div', {contains:'foo'});
 
-  result = expectElement(app, '.the-div', {contains:'not found'});
+    expect(result.ok, 'passes').to.equal(true);
+    expect(result.message).to.equal('Found 1 of .the-div containing "foo"');
 
-  ok(!result.ok, 'fails');
-  equal(result.message, 'Found 2 of .the-div but 0/1 containing "not found"');
+    result = expectElement(app, '.the-div', {contains:'not found'});
+
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message).to.equal('Found 2 of .the-div but 0/1 containing "not found"');
+  });
+
 });

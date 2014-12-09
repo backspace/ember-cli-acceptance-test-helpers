@@ -3,6 +3,6 @@ export default function(helperFn){
   return function(){
     var result = helperFn.apply(null, arguments);
 
-    ok(result.ok, result.message);
+    expect(result.ok, result.message).to.equal(true);
   };
 }

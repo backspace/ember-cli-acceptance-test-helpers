@@ -1,11 +1,9 @@
-import {
-  test
-} from 'ember-qunit';
-
 import registerAcceptanceTestHelpers from '../helpers/201-created/register-acceptance-test-helpers';
 
-module('Unit - Basic');
+describe('Unit - Basic', function() {
 
-test('registerAcceptanceTestHelpers exists', function(){
-  ok(registerAcceptanceTestHelpers);
+  it('registerAcceptanceTestHelpers exists', function(){
+    expect(registerAcceptanceTestHelpers).to.exist();
+  });
+
 });

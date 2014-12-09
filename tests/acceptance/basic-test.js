@@ -3,54 +3,55 @@ import startApp from '../helpers/start-app';
 
 var App;
 
-module('Acceptance: Basic', {
-  setup: function() {
+describe('Acceptance: Basic', function() {
+  beforeEach(function() {
     App = startApp();
-  },
-  teardown: function() {
+  });
+  afterEach(function() {
     Ember.run(App, 'destroy');
-  }
-});
-
-test('visiting /', function() {
-  visit('/');
-
-  andThen(function() {
-    equal(currentPath(), 'index');
   });
-});
 
-test('visiting /, expectComponent', function() {
-  visit('/');
+  it('visiting /', function() {
+    visit('/');
 
-  andThen(function() {
-    App.testHelpers.expectComponent('simple-component');
-  });
-});
-
-test('visiting /, expectElement', function() {
-  visit('/');
-
-  andThen(function() {
-    App.testHelpers.expectElement('.some-div');
-  });
-});
-
-test('visiting /, expectNoElement', function() {
-  visit('/');
-
-  andThen(function() {
-    App.testHelpers.expectNoElement('.missing-div');
-  });
-});
-
-test('visiting /, withinElement', function() {
-  visit('/');
-
-  andThen(function() {
-    App.testHelpers.withinElement('.some-div', function(){
-      App.testHelpers.expectElement('.inner-div');
-      App.testHelpers.expectNoElement('.outer-div');
+    andThen(function() {
+      expect(currentPath()).to.equal('index');
     });
   });
+
+  it('visiting /, expectComponent', function() {
+    visit('/');
+
+    andThen(function() {
+      App.testHelpers.expectComponent('simple-component');
+    });
+  });
+
+  it('visiting /, expectElement', function() {
+    visit('/');
+
+    andThen(function() {
+      App.testHelpers.expectElement('.some-div');
+    });
+  });
+
+  it('visiting /, expectNoElement', function() {
+    visit('/');
+
+    andThen(function() {
+      App.testHelpers.expectNoElement('.missing-div');
+    });
+  });
+
+  it('visiting /, withinElement', function() {
+    visit('/');
+
+    andThen(function() {
+      App.testHelpers.withinElement('.some-div', function(){
+        App.testHelpers.expectElement('.inner-div');
+        App.testHelpers.expectNoElement('.outer-div');
+      });
+    });
+  });
+
 });
