@@ -111,6 +111,24 @@ describe('Unit - expectElement', function() {
     expect(result.message).to.equal('Found 1 of .the-div but 0/1 containing "not found"');
   });
 
+  it('can be passed a number and option `contains`', function(){
+    var find = function(){
+      return makeElements('div', {class:'the-div', text: 'foo bar'}, 3);
+    };
+
+    var app = makeApp(find);
+
+    var result = expectElement(app, '.the-div', 3, {contains:'foo'});
+
+    expect(result.ok, 'passes').to.equal(true);
+    expect(result.message, 'Found 3 of .the-div containing "foo"');
+
+    result = expectElement(app, '.the-div', 3, {contains:'not found'});
+
+    expect(!result.ok, 'fails').to.equal(true);
+    expect(result.message).to.equal('Found 3 of .the-div but 0/3 containing "not found"');
+  });
+
   it('option `contains` filters the elements', function(){
     var find = function(){
       return $([

@@ -1,5 +1,8 @@
 # Ember Test Helpers
 
+A set of useful helper for ember-cli acceptance tests. Includes
+`expectComponent`, `expectElement`, and `clickComponent`.
+
 ### `expectComponent`
 
 `expectComponent(componentName, count, options)`
@@ -37,6 +40,10 @@ value of `options.contains`.
 A convenience for `expectElement` when the count is 0.
 
 `options` can include a `contains` key.
+
+## Mocha
+
+If you want to use this with [`ember-cli-mocha`](https://github.com/switchfly/ember-cli-mocha), try [this fork](https://github.com/backspace/ember-cli-acceptance-test-helpers/tree/use-mocha).
 
 ## Setup
 
